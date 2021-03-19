@@ -65,3 +65,15 @@
 * Ferramenta utilizada para realizar requisições HTTP
 
 * Com ela é possível chamar qualquer método e também enviar parâmetros
+
+#### Primeira aplicação Flask
+
+Importando o pacote Flask
+```py
+from flask import Flask
+```
+
+Criando um decorador
+```py
+@app.route("/")
+```
