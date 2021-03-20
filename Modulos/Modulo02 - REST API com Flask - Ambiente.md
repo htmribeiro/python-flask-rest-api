@@ -73,7 +73,80 @@ Importando o pacote Flask
 from flask import Flask
 ```
 
-Criando um decorador
+```py
+app = Flask(__name__)
+```
+
+Criando a primeira rota
+```py
+def ola():
+    return "Olá, Mundo!"
+```
+
+Criando um decorador com a rota que será invocada `"/"`
 ```py
 @app.route("/")
 ```
+
+Criando o `run` para execução da aplicação.
+> Para que outros modulos não invoquem essa execução iremos colocar a chamada dentro de um `if` verificando se a chamada vem desse próprio módulo **run.py** validando se é igual a `__main__` quem está invocando.
+```py
+if __name__=="__main__":
+     app.run()
+```
+
+#### Executando a aplicação
+
+Quando a aplicação é executada, é apresentado no terminal *localhost* que está executando `http://127.0.0.1:5000/`
+
+Ao acessarmos essa URL, abrirá o navegador apresentando **`Olá, Mundo!`**.
+
+![TIPS]
+
+* Para reapresentar no navegador, qualquer alteração realizada no código precisaremos reiniciar a aplicação.
+* Ou podemos utilizar o parâmetro **debug**
+  * Utilizando o parâmetro como `True` a aplicação reinicia a cada alteração automaticamente
+  * `app.run(debug=True)`
+  * Em produção devemos desabilitar o modo `debug=False` senão ele apresentará toda a trilha do erro.
+
+#### Utilizando o Postman para testar a rota
+
+O Postman consegue realizar chamadas utilizando outros métodos.
+
+Colocamos o *localhost* e enviamos a requisição.  
+Com isso veremos o mesmo retorno apresentado pelo navegador.
+
+![TIPS]
+
+> O navegador só utiliza o método GET. Logo não conseguimos testar outros métodos diretamente nele, motivo pelo qual utilizamos o Postman.
+
+Para efeito de testes, iremos incluir um *POST* para leitura, mesmo que pela definição da arquitetura REST, ele seja utilizado para realizar **alteração**.
+
+```py
+@app.route("/", methods=['POST'])
+```
+
+Por não existir para essa raíz um *GET*, o navegador apresentará **Method Not Allowed**.  
+Porém, pelo postman conseguimos visualizar o retorno, alterando a chamada para *POST*.
+
+Podemos definir também, que ele aceite dois métodos tanto o *GET* quanto o *POST*, para isso adicionamos em `methods`.
+
+```py
+@app.route("/", methods=['GET','POST'])
+```
+
+Com isso receberemos retorno escolhendo qualquer dos dois métodos tanto no Postman quanto no navegador.
+
+* Podemos passar parâmetros `<numero>`.
+
+>```py
+> @app.route("/<numero>", methods=['GET','POST'])
+> 
+> def ola(numero):
+>   return 'Olá, Mundo! {}'.format(numero) 
+>```
+
+* Essa é uma forma que temos de pegar um parâmetro atráves da URI.  
+Podemos declarar o tipo do parâmetro que será passado. Ex: `<int:numero>` - Inteiro.
+* No navegador adicionamos um valor após o endereço (Ex.: URI + 100) e receberemos o retorno.
+* **Olá, Mundo! 100**
